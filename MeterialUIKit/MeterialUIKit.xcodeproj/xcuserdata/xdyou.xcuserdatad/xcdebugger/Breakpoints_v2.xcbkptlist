@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "547"
-            endingLineNumber = "547"
+            startingLineNumber = "599"
+            endingLineNumber = "599"
             landmarkName = "MeterialCheckBox"
             landmarkType = "3">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
+            startingLineNumber = "579"
+            endingLineNumber = "579"
             landmarkName = "createCenteredLineWithRadius(_:angle:offset:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
+            startingLineNumber = "580"
+            endingLineNumber = "580"
             landmarkName = "MeterialCheckBox"
             landmarkType = "3">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "529"
-            endingLineNumber = "529"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
             landmarkName = "onCheckBoxTouchDown(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "519"
-            endingLineNumber = "519"
+            startingLineNumber = "571"
+            endingLineNumber = "571"
             landmarkName = "createCenteredLineWithRadius(_:angle:offset:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "556"
-            endingLineNumber = "556"
+            startingLineNumber = "608"
+            endingLineNumber = "608"
             landmarkName = "_switchStateAnimated(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
-            timestampString = "441966356.000511"
+            timestampString = "441967888.706144"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "566"
-            endingLineNumber = "566"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
             landmarkName = "animationDidStop(_:finished:)"
             landmarkType = "5">
          </BreakpointContent>
