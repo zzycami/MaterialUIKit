@@ -298,7 +298,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         }
     }
     
-    private func spinCheckbox(animated:Bool, angle1:CGFloat, angle2:CGFloat, radiusDenominator:CGFloat, duration:CGFloat) {
+    private func spinCheckbox(animated:Bool, angle1:Double, angle2:Double, radiusDenominator:CGFloat, duration:Double) {
         finishedAnimations = false;
         checkmarkSidesCompletedAnimating = 0;
         
@@ -311,7 +311,36 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         var radius = CheckboxSideLength/radiusDenominator;
         var ratio = CheckboxSideLength/ratioDenominator;
         var offset = radius - ratio;
-        var slightOffsetForCheckmarkCentering = CGPointMake(4, 9);
+        var slightOffsetForCheckmarkCentering = CGPointMake(4, 9);// Hardcoded in the most offensive way. Forgive me Father, for I have sinned.
+        
+        var newLeftPath = self.createCenteredLineWithRadius(radius, angle: angle2, offset: CGPointMake(-offset - slightOffsetForCheckmarkCentering.x, -offset + slightOffsetForCheckmarkCentering.y));
+        var newTopPath = self.createCenteredLineWithRadius(radius, angle: angle1, offset: CGPointMake(offset - slightOffsetForCheckmarkCentering.x, -offset + slightOffsetForCheckmarkCentering.y));
+        var newRightPath = self.createCenteredLineWithRadius(radius, angle: angle2, offset: CGPointMake(offset - slightOffsetForCheckmarkCentering.x, offset + slightOffsetForCheckmarkCentering.y));
+        var newBottomPath = self.createCenteredLineWithRadius(radius, angle: angle1, offset: CGPointMake(-offset - slightOffsetForCheckmarkCentering.x, offset + slightOffsetForCheckmarkCentering.y));
+        
+        if animated {
+            var newPaths = [newLeftPath, newTopPath, newRightPath, newBottomPath];
+            var lines = [lineLeft, lineTop, lineRight, lineBottom];
+            var animationkeys = ["spinLeftLine", "spinTopLine", "spinRightLine", "spinBottomLine"];
+            var counterValues = [box_spinCounterclockwiseAnimationLeftLine, box_spinCounterclockwiseAnimationTopLine, box_spinCounterclockwiseAnimationRightLine, box_spinCounterclockwiseAnimationBottomLine];
+            var values = [box_spinClockwiseAnimationLeftLine, box_spinClockwiseAnimationTopLine, box_spinClockwiseAnimationRightLine, box_spinClockwiseAnimationBottomLine];
+            for i in 0...3 {
+                var lineAnimation = CABasicAnimation(keyPath: "path");
+                lineAnimation.removedOnCompletion = false;
+                lineAnimation.duration = duration;
+                lineAnimation.fromValue = lines[i].path;
+                lineAnimation.toValue = newPaths[i];
+                lineAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear);
+                lineAnimation.delegate = self;
+                lineAnimation.setValue(self.isChecked ?values[i]:counterValues[i], forKey: "id");
+                lines[i].addAnimation(lineAnimation, forKey: animationkeys[i]);
+            }
+        }
+        
+        self.lineLeft.path = newLeftPath;
+        self.lineTop.path = newTopPath;
+        self.lineRight.path = newRightPath;
+        self.lineBottom.path = newBottomPath;
     }
     
     private func drawCheckBoxAnimated(animated:Bool) {
@@ -364,6 +393,11 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         lineBottom.strokeColor = tintColor!.CGColor;
     }
     
+    // This fucntion only modyfies the checkbox. When it's animation is complete, it calls a function to draw the checkmark.
+    private func shrinkAwayCheckboxAnimated(animated:Boolean) {
+        
+    }
+    
     public override func prepareForInterfaceBuilder() {
     }
     
@@ -412,18 +446,53 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         
         if isChecked {
             // Shrink checkBOX:
+            self.spinCheckbox(true, angle1: M_PI_4, angle2: -5*M_PI_4, radiusDenominator: 4, duration: AnimationDurationConstant);
         }else {
             // Shrink checkMARK:
+            self.drawCheckBoxAnimated(true);
         }
         self.fadeTapCircleOut();
     }
     
     override public func animationDidStop(animation:CAAnimation, finished flag:Bool) {
-        if (animation.valueForKey("id") as? String) == "fadeCircleOut" {
+        var key = animation.valueForKey("id") as? String;
+        println("key:\(key)");
+        if (key == "fadeCircleOut") {
             if self.deathRowForCircleLayers.count > 0 {
                 self.deathRowForCircleLayers[0].removeFromSuperlayer();
                 self.deathRowForCircleLayers.removeAtIndex(0);
             }
+        }else if(key == box_drawLeftLine ||
+            key == box_drawTopLine ||
+            key == box_drawRightLine ||
+            key == box_drawBottomLine) {
+            self.checkboxSidesCompletedAnimating++ ;
+            if self.checkboxSidesCompletedAnimating >= 4 {
+                self.checkboxSidesCompletedAnimating = 0;
+                self.finishedAnimations = true;
+                println("FINISHED drawing BOX");
+            }
+        }else if(key == box_spinClockwiseAnimationLeftLine ||
+            key == box_spinClockwiseAnimationTopLine ||
+            key == box_spinClockwiseAnimationRightLine ||
+            key == box_spinClockwiseAnimationBottomLine) {
+            self.checkboxSidesCompletedAnimating++ ;
+            if self.checkboxSidesCompletedAnimating >= 4 {
+                self.checkboxSidesCompletedAnimating = 0;
+                self.finishedAnimations = true;
+                println("FINISHED drawing BOX");
+            }
+        }else if(key == box_spinCounterclockwiseAnimationLeftLine ||
+            key == box_spinCounterclockwiseAnimationTopLine ||
+            key == box_spinCounterclockwiseAnimationRightLine ||
+            key == box_spinCounterclockwiseAnimationBottomLine) {
+                self.checkboxSidesCompletedAnimating++ ;
+                if self.checkboxSidesCompletedAnimating >= 4 {
+                    self.checkboxSidesCompletedAnimating = 0;
+                    self.finishedAnimations = true;
+                    self.drawCheckBoxAnimated(true);
+                    println("FINISHED spinning box CCW");
+                }
         }
     }
 }
