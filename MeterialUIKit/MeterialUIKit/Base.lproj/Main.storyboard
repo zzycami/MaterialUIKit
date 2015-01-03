@@ -25,6 +25,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="tapCircleNegativeColor">
                                         <color key="value" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isChecked" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>

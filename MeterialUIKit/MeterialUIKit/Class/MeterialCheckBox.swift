@@ -110,7 +110,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
             self.layer.addSublayer(layer);
         }
         
-        drawCheckBoxAnimated(false);
+        isChecked ? drawCheckmark(false) : drawCheckBoxAnimated(false);
         
         self.addTarget(self, action: "onCheckBoxTouchDown:", forControlEvents: UIControlEvents.TouchDown);
         self.addTarget(self, action: "onCheckBoxTouchUpAndSwitchStates:", forControlEvents: UIControlEvents.TouchUpInside);
@@ -164,7 +164,12 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     *  @param animated A BOOL flag to choose whether or not to animate the change.
     */
     public func switchStatesAnimated(animated:Bool) {
-        
+        // As long as this comment remains, Animating the change will take the regular path, statically changing the state will take a second path. I would like to combine the two but right now this is faster and easier.
+        if animated {
+            _switchStateAnimated(animated);
+        }else {
+            isChecked ? uncheckAnimated(animated) : checkAnimated(animated);
+        }
     }
     
     /**
@@ -191,6 +196,16 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     *  @param animated A BOOL flag to choose whether or not to animate the change.
     */
     public func uncheckAnimated(animated:Bool) {
+        if !isChecked {
+            return;
+        }
+        isChecked = false;
+        self.delegate?.checkboxChangedState?(self);
+        if animated {
+            self.shrinkAwayCheckmark(animated);
+        }else {
+            self.drawCheckmark(animated);
+        }
     }
     
     
