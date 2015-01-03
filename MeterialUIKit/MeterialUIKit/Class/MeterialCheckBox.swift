@@ -76,9 +76,9 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     
     public override init(frame: CGRect) {
         var defaultFrame = frame;
-        if frame == CGRectZero {
-            defaultFrame.size = CGSizeMake(CheckboxDefaultRadius*2, CheckboxDefaultRadius*2);
-        }
+//        if frame == CGRectZero {
+//            defaultFrame.size = CGSizeMake(CheckboxDefaultRadius*2, CheckboxDefaultRadius*2);
+//        }
         super.init(frame: defaultFrame);
         self.setupWithRadius();
     }
@@ -110,7 +110,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
             self.layer.addSublayer(layer);
         }
         
-        isChecked ? drawCheckmark(false) : drawCheckBoxAnimated(false);
+        //isChecked ? drawCheckmark(false) : drawCheckBoxAnimated(false);
         
         self.addTarget(self, action: "onCheckBoxTouchDown:", forControlEvents: UIControlEvents.TouchDown);
         self.addTarget(self, action: "onCheckBoxTouchUpAndSwitchStates:", forControlEvents: UIControlEvents.TouchUpInside);
@@ -123,6 +123,22 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         
         UIView.setAnimationDidStopSelector("animationDidStop:finished:");
     }
+    
+    private var initializing:Bool = true;
+    
+    public override func layoutSubviews() {
+        // The attirbutes of the view is not initialize in the init function, in layoutSubviews, all the attributes have been initialized. so , we can do some thing here.
+        println("layoutSubviews:\(isChecked), finishedAnimations:\(finishedAnimations)");
+        var frame = self.frame;
+        println("frame :\(frame)");
+        
+        if initializing {
+            isChecked ? drawCheckmark(false) : drawCheckBoxAnimated(false);
+            initializing = false;
+        }
+    }
+    
+   
     
     // MARK: Gesture Recognizer Delegate
     public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
