@@ -25,8 +25,8 @@ extension UIColor {
 /** A nice recommended value for size. (eg. [[BFPaperCheckbox alloc] initWithFrame:CGRectMake(x, y, bfPaperCheckboxDefaultRadius * 2, bfPaperCheckboxDefaultRadius * 2)]; */
 public let CheckboxDefaultRadius:CGFloat = 39.0;
 // -animation durations:
-let AnimationDurationConstant:CGFloat = 0.12;
-let TapCircleGrowthDurationConstant:CGFloat = AnimationDurationConstant*2;
+let AnimationDurationConstant = 0.18;
+let TapCircleGrowthDurationConstant = AnimationDurationConstant*2;
 // -tap-circle's size:
 let TapCircleDiameterStartValue:CGFloat = 1.0;
 // -tap-circle's beauty:
@@ -76,7 +76,9 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     
     public override init(frame: CGRect) {
         var defaultFrame = frame;
-        defaultFrame.size = CGSizeMake(CheckboxDefaultRadius*2, CheckboxDefaultRadius*2);
+        if frame == CGRectZero {
+            defaultFrame.size = CGSizeMake(CheckboxDefaultRadius*2, CheckboxDefaultRadius*2);
+        }
         super.init(frame: defaultFrame);
         self.setupWithRadius();
     }
@@ -110,13 +112,14 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         
         drawCheckBoxAnimated(false);
         
-        self.addTarget(self, action: "onCheckBoxTouchDown:", forControlEvents: UIControlEvents.TouchUpInside);
+        self.addTarget(self, action: "onCheckBoxTouchDown:", forControlEvents: UIControlEvents.TouchDown);
         self.addTarget(self, action: "onCheckBoxTouchUpAndSwitchStates:", forControlEvents: UIControlEvents.TouchUpInside);
         self.addTarget(self, action: "onCheckBoxTouchUp:", forControlEvents: UIControlEvents.TouchUpOutside);
         self.addTarget(self, action: "onCheckBoxTouchUp:", forControlEvents: UIControlEvents.TouchCancel);
         
         var tapGuesture = UITapGestureRecognizer(target: self, action: nil);
         tapGuesture.delegate = self;
+        self.gestureRecognizers = [tapGuesture];
         
         UIView.setAnimationDidStopSelector("animationDidStop:finished:");
     }
@@ -195,6 +198,122 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     private var checkmarkSidesCompletedAnimating:Int = 0; // This should bounce between 0 and 2, representing the number of checkmark sides which have completed animating.
     private var finishedAnimations:Bool = true;
     
+    
+    // MARK: Animation
+    private func growTapCircle() {
+        // Spawn a growing circle that "ripples" through the button:
+        var tapCircleDiameterEndValue = self.rippleFromTapLocation ? self.radius*4 : self.radius*2;// if the circle comes from the center, its the perfect size. otherwise it will be quite small.
+        var tapCircleFinalDiameter = self.rippleFromTapLocation ? self.radius*4 : self.radius*2;// if the circle comes from the center, its the perfect size. otherwise it will be quite small.
+        
+        // Create a UIView which we can modify for its frame value later (specifically, the ability to use .center):
+        var tapCircleLayerSizerView = UIView(frame: CGRectMake(0, 0, tapCircleFinalDiameter, tapCircleFinalDiameter));
+        tapCircleLayerSizerView.center = self.rippleFromTapLocation ? self.tapPoint : CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+        
+        // Calculate starting path:
+        var startingRectSizerView = UIView(frame: CGRectMake(0, 0, TapCircleDiameterStartValue, TapCircleDiameterStartValue));
+        startingRectSizerView.center = tapCircleLayerSizerView.center;
+        
+        // Create starting circle path:
+        var startingCirclePath = UIBezierPath(roundedRect: startingRectSizerView.frame, cornerRadius: TapCircleDiameterStartValue/2);
+        
+        // Calculate ending path:
+        var endingRectSizerView = UIView(frame: CGRectMake(0, 0, tapCircleDiameterEndValue, tapCircleDiameterEndValue));
+        endingRectSizerView.center = tapCircleLayerSizerView.center;
+        
+        // Cretae ending circle path:
+        var endingCirclePath = UIBezierPath(roundedRect: endingRectSizerView.frame, cornerRadius: tapCircleDiameterEndValue/2);
+        
+        // Create tap circle:
+        var tapCicle = CAShapeLayer();
+        tapCicle.strokeColor = UIColor.clearColor().CGColor;
+        tapCicle.borderColor = UIColor.clearColor().CGColor;
+        tapCicle.borderWidth = 0;
+        tapCicle.path = startingCirclePath.CGPath;
+        // Set tap circle layer's background color:
+        if self.isChecked {
+            // It is currently checked, so we are unchecking it:
+            if let negativeColor = self.tapCircleNegativeColor {
+                tapCicle.fillColor = negativeColor.CGColor;
+            }else {
+                tapCicle.fillColor = UIColor.colorWith(0x616161).CGColor;
+            }
+        }else {
+            // It is currently unchecked, so we are checking it:
+            if let positiveColor = self.tapCirclePositiveColor {
+                tapCicle.fillColor = positiveColor.CGColor;
+            }else {
+                tapCicle.fillColor = self.checkmarkColor.CGColor;
+            }
+        }
+        // Add tap circle to array and view:
+        rippleAnimationQueue.append(tapCicle);
+        layer.insertSublayer(tapCicle, atIndex: 0);
+        
+        /*
+        * Animations:
+        */
+        // Grow tap-circle animation (performed on mask layer):
+        UIView.setAnimationDidStopSelector("animationDidStop:finished:");
+        var tapCircleGrowthAnimation = CABasicAnimation(keyPath: "path");
+        tapCircleGrowthAnimation.delegate = self;
+        tapCircleGrowthAnimation.fromValue = startingCirclePath.CGPath;
+        tapCircleGrowthAnimation.toValue = endingCirclePath.CGPath;
+        tapCircleGrowthAnimation.fillMode = kCAFillModeForwards;
+        tapCircleGrowthAnimation.removedOnCompletion = false;
+        tapCircleGrowthAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut);
+        tapCircleGrowthAnimation.duration = TapCircleGrowthDurationConstant;
+        tapCircleGrowthAnimation.setValue("tapGrowth", forKey: "id");
+        
+        // Fade in self.animationLayer:
+        var fadeInAnimation = CABasicAnimation(keyPath: "opacity");
+        fadeInAnimation.duration = AnimationDurationConstant;
+        fadeInAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear);
+        fadeInAnimation.fromValue = 0;
+        fadeInAnimation.toValue = 1;
+        fadeInAnimation.removedOnCompletion = false;
+        fadeInAnimation.fillMode = kCAFillModeForwards;
+        
+        // Add the animations to the layers:
+        tapCicle.addAnimation(tapCircleGrowthAnimation, forKey: "animatePath");
+        tapCicle.addAnimation(fadeInAnimation, forKey: "opacityAnimation");
+    }
+    
+    private func fadeTapCircleOut() {
+        if rippleAnimationQueue.count > 0 {
+            var tempAnimationLayer = self.rippleAnimationQueue.first;
+            if tempAnimationLayer != nil {
+                self.deathRowForCircleLayers.insert(tempAnimationLayer!, atIndex: 0);
+            }
+            rippleAnimationQueue.removeAtIndex(0);
+            
+            var fadeOutAnimation = CABasicAnimation(keyPath: "opacity");
+            fadeOutAnimation.setValue("fadeCircleOut", forKey: "id");
+            fadeOutAnimation.delegate = self;
+            fadeOutAnimation.fromValue = tempAnimationLayer?.opacity;
+            fadeOutAnimation.toValue = 0;
+            fadeOutAnimation.fillMode = kCAFillModeForwards;
+            fadeOutAnimation.duration = AnimationDurationConstant;
+            
+            tempAnimationLayer?.addAnimation(fadeOutAnimation, forKey: "opacityAnimation");
+        }
+    }
+    
+    private func spinCheckbox(animated:Bool, angle1:CGFloat, angle2:CGFloat, radiusDenominator:CGFloat, duration:CGFloat) {
+        finishedAnimations = false;
+        checkmarkSidesCompletedAnimating = 0;
+        
+        lineLeft.opacity = 1;
+        lineTop.opacity = 1;
+        lineRight.opacity = 1;
+        lineBottom.opacity = 1;
+        
+        var ratioDenominator = radiusDenominator*4;
+        var radius = CheckboxSideLength/radiusDenominator;
+        var ratio = CheckboxSideLength/ratioDenominator;
+        var offset = radius - ratio;
+        var slightOffsetForCheckmarkCentering = CGPointMake(4, 9);
+    }
+    
     private func drawCheckBoxAnimated(animated:Bool) {
         lineLeft.opacity = 1;
         lineTop.opacity = 1;
@@ -207,6 +326,31 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         var newBottomPath:CGPathRef = createCenteredLineWithRadius(CheckboxSideLength, angle: 0, offset: CGPointMake(0, CheckboxSideLength));
         
         if animated {
+            var newPaths = [newLeftPath, newTopPath, newRightPath, newBottomPath];
+            var lines = [lineLeft, lineTop, lineRight, lineBottom];
+            var vlues = [box_drawLeftLine, box_drawTopLine, box_drawRightLine, box_drawBottomLine];
+            var pathAnimationKeys = ["animateLeftLinePath", "animateTopLinePath", "animateRightLinePath", "animateBottomLinePath"];
+            var colorAnimationKeys = ["animateLeftLineStrokeColor", "animateTopLineStrokeColor", "animateRightLineStrokeColor", "animateBottomLineStrokeColor"];
+            
+            for var i = 0;i < 4;i++ {
+                var pathAnimation = CABasicAnimation(keyPath: "path");
+                pathAnimation.removedOnCompletion = false;
+                pathAnimation.duration = AnimationDurationConstant;
+                pathAnimation.fromValue = lines[i].path;
+                pathAnimation.toValue = newPaths[i];
+                pathAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear);
+                pathAnimation.setValue(vlues[i], forKey: "id");
+                pathAnimation.delegate = self;
+                lines[i].addAnimation(pathAnimation, forKey: pathAnimationKeys[i]);
+                
+                var colorAnimation = CABasicAnimation(keyPath: "strokeColor");
+                colorAnimation.removedOnCompletion = false;
+                colorAnimation.duration = AnimationDurationConstant;
+                colorAnimation.fromValue = lines[i].strokeColor;
+                colorAnimation.toValue = tintColor!.CGColor;
+                colorAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear);
+                lines[i].addAnimation(colorAnimation, forKey: colorAnimationKeys[i]);
+            }
         }
         
         lineLeft.path = newLeftPath;
@@ -241,16 +385,45 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     
     func onCheckBoxTouchDown(sender: MeterialCheckBox) {
         println("Touch down handler");
+        growTapCircle();
     }
     
     func onCheckBoxTouchUp(sender: MeterialCheckBox) {
         println("Touch up handler");
+        fadeTapCircleOut();
     }
     
     func onCheckBoxTouchUpAndSwitchStates(sender: MeterialCheckBox) {
         println("Touch Up handler with switching states");
+        if !finishedAnimations {
+            fadeTapCircleOut();
+            return;
+        }
+        _switchStateAnimated(true);
+    }
+    
+    private func _switchStateAnimated(animated:Bool) {
+        // Change states:
+        isChecked = !isChecked;
+        println("self.isCheched:\(isChecked)");
+        
+        // Notify our delegate that we changed states!
+        self.delegate?.checkboxChangedState?(self);
+        
+        if isChecked {
+            // Shrink checkBOX:
+        }else {
+            // Shrink checkMARK:
+        }
+        self.fadeTapCircleOut();
     }
     
     override public func animationDidStop(animation:CAAnimation, finished flag:Bool) {
+        if (animation.valueForKey("id") as? String) == "fadeCircleOut" {
+            if self.deathRowForCircleLayers.count > 0 {
+                self.deathRowForCircleLayers[0].removeFromSuperlayer();
+                self.deathRowForCircleLayers.removeAtIndex(0);
+            }
+        }
     }
 }
