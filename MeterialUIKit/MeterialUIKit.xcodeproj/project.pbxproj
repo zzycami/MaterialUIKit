@@ -29,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		51791D361A5294460096D8A2 /* ClockFaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClockFaceView.swift; path = Class/ClockFaceView.swift; sourceTree = "<group>"; };
+		51AECFA21A5BAE7E00A0196D /* MeterialUIKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MeterialUIKit.playground; sourceTree = "<group>"; };
 		51B083761A524E2900B2C916 /* MeterialUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeterialUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51B0837A1A524E2900B2C916 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51B0837B1A524E2900B2C916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +89,7 @@
 				51B083821A524E2900B2C916 /* Images.xcassets */,
 				51B083841A524E2900B2C916 /* LaunchScreen.xib */,
 				51B083791A524E2900B2C916 /* Supporting Files */,
+				51AECFA21A5BAE7E00A0196D /* MeterialUIKit.playground */,
 			);
 			path = MeterialUIKit;
 			sourceTree = "<group>";

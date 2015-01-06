@@ -240,6 +240,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     private var finishedAnimations:Bool = true;
     
     
+    
     // MARK: Animation
     private func growTapCircle() {
         // Spawn a growing circle that "ripples" through the button:
@@ -294,7 +295,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         * Animations:
         */
         // Grow tap-circle animation (performed on mask layer):
-        UIView.setAnimationDidStopSelector("animationDidStop:finished:");
+        //UIView.setAnimationDidStopSelector("animationDidStop:finished:");
         var tapCircleGrowthAnimation = CABasicAnimation(keyPath: "path");
         tapCircleGrowthAnimation.delegate = self;
         tapCircleGrowthAnimation.fromValue = startingCirclePath.CGPath;
@@ -309,8 +310,8 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
         var fadeInAnimation = CABasicAnimation(keyPath: "opacity");
         fadeInAnimation.duration = AnimationDurationConstant;
         fadeInAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear);
-        fadeInAnimation.fromValue = 0;
-        fadeInAnimation.toValue = 1;
+        fadeInAnimation.fromValue = 0.0;
+        fadeInAnimation.toValue = 1.0;
         fadeInAnimation.removedOnCompletion = false;
         fadeInAnimation.fillMode = kCAFillModeForwards;
         
@@ -334,6 +335,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
             fadeOutAnimation.toValue = 0;
             fadeOutAnimation.fillMode = kCAFillModeForwards;
             fadeOutAnimation.duration = AnimationDurationConstant;
+            fadeOutAnimation.removedOnCompletion = false;
             
             tempAnimationLayer?.addAnimation(fadeOutAnimation, forKey: "opacityAnimation");
         }
@@ -648,7 +650,7 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
     
     override public func animationDidStop(animation:CAAnimation, finished flag:Bool) {
         var key = animation.valueForKey("id") as? String;
-        println("key:\(key)");
+        //println("key:\(key)");
         if (key == "fadeCircleOut") {
             if self.deathRowForCircleLayers.count > 0 {
                 self.deathRowForCircleLayers[0].removeFromSuperlayer();
@@ -671,7 +673,6 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
             self.checkboxSidesCompletedAnimating++ ;
             if self.checkboxSidesCompletedAnimating >= 4 {
                 self.checkboxSidesCompletedAnimating = 0;
-                self.finishedAnimations = true;
                 self.shrinkAwayCheckboxAnimated(true);
                 println("FINISHED spinning box CCW");
             }
@@ -699,7 +700,6 @@ public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {
                 self.checkmarkSidesCompletedAnimating++ ;
                 if self.checkmarkSidesCompletedAnimating >= 2 {
                     self.checkmarkSidesCompletedAnimating = 0;
-                    self.finishedAnimations = true;
                     self.spinCheckbox(true, angle1: M_PI_4, angle2: -5*M_PI_4, radiusDenominator: 4, duration: AnimationDurationConstant/2);
                     println("FINISHED shrinking checkmark");
                 }
