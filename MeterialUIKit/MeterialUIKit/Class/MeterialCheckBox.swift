@@ -25,41 +25,41 @@ extension UIColor {
 /** A nice recommended value for size. (eg. [[BFPaperCheckbox alloc] initWithFrame:CGRectMake(x, y, bfPaperCheckboxDefaultRadius * 2, bfPaperCheckboxDefaultRadius * 2)]; */
 public let CheckboxDefaultRadius:CGFloat = 39.0;
 // -animation durations:
-let AnimationDurationConstant = 0.18;
-let TapCircleGrowthDurationConstant = AnimationDurationConstant*2;
+private let AnimationDurationConstant = 0.18;
+private let TapCircleGrowthDurationConstant = AnimationDurationConstant*2;
 // -tap-circle's size:
-let TapCircleDiameterStartValue:CGFloat = 1.0;
+private let TapCircleDiameterStartValue:CGFloat = 1.0;
 // -tap-circle's beauty:
-let TapFillConstant:CGFloat = 0.3;
+private let TapFillConstant:CGFloat = 0.3;
 // -checkbox's beauty:
-let CheckboxSideLength:CGFloat = 9.0;
+private let CheckboxSideLength:CGFloat = 9.0;
 // -animation function names:
 // For spinning box clockwise while shrinking:
-let box_spinClockwiseAnimationLeftLine = "leftLineSpin";
-let box_spinClockwiseAnimationTopLine = "topLineSpin";
-let box_spinClockwiseAnimationRightLine = "rightLineSpin";
-let box_spinClockwiseAnimationBottomLine = "bottomLineSpin";
+private let box_spinClockwiseAnimationLeftLine = "leftLineSpin";
+private let box_spinClockwiseAnimationTopLine = "topLineSpin";
+private let box_spinClockwiseAnimationRightLine = "rightLineSpin";
+private let box_spinClockwiseAnimationBottomLine = "bottomLineSpin";
 // For spinning box counterclockwise while growing:
-let box_spinCounterclockwiseAnimationLeftLine = "leftLineSpin2";
-let box_spinCounterclockwiseAnimationTopLine = "topLineSpin2";
-let box_spinCounterclockwiseAnimationRightLine = "rightLineSpin2";
-let box_spinCounterclockwiseAnimationBottomLine = "bottomLineSpin2";
+private let box_spinCounterclockwiseAnimationLeftLine = "leftLineSpin2";
+private let box_spinCounterclockwiseAnimationTopLine = "topLineSpin2";
+private let box_spinCounterclockwiseAnimationRightLine = "rightLineSpin2";
+private let box_spinCounterclockwiseAnimationBottomLine = "bottomLineSpin2";
 // For drawing an empty checkbox:
-let box_drawLeftLine = "leftLineStroke";
-let box_drawTopLine = "topLineStroke";
-let box_drawRightLine = "rightLineStroke";
-let box_drawBottomLine = "bottomLineStroke";
+private let box_drawLeftLine = "leftLineStroke";
+private let box_drawTopLine = "topLineStroke";
+private let box_drawRightLine = "rightLineStroke";
+private let box_drawBottomLine = "bottomLineStroke";
 // For drawing checkmark:
-let mark_drawShortLine = "smallCheckmarkLine";
-let mark_drawLongLine = "largeCheckmarkLine";
+private let mark_drawShortLine = "smallCheckmarkLine";
+private let mark_drawLongLine = "largeCheckmarkLine";
 // For removing checkbox:
-let box_eraseLeftLine = "leftLineStroke2";
-let box_eraseTopLine = "topLineStroke2";
-let box_eraseRightLine = "rightLineStroke2";
-let box_eraseBottomLine = "bottomLineStroke2";
+private let box_eraseLeftLine = "leftLineStroke2";
+private let box_eraseTopLine = "topLineStroke2";
+private let box_eraseRightLine = "rightLineStroke2";
+private let box_eraseBottomLine = "bottomLineStroke2";
 // removing checkmark:
-let mark_eraseShortLine = "smallCheckmarkLine2";
-let mark_eraseLongLine = "largeCheckmarkLine2";
+private let mark_eraseShortLine = "smallCheckmarkLine2";
+private let mark_eraseLongLine = "largeCheckmarkLine2";
 
 @IBDesignable
 public class MeterialCheckBox: UIButton, UIGestureRecognizerDelegate {

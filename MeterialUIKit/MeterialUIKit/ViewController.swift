@@ -21,6 +21,8 @@ class ViewController: UIViewController, MeterialCheckboxDelegate {
         view.addSubview(checkBox);
         
         //checkBox2.backgroundColor = UIColor.redColor();
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
