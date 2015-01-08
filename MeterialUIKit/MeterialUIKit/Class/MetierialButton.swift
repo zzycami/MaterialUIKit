@@ -216,7 +216,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
         layer.insertSublayer(backgroundColorFadeLayer, atIndex: 0);
         
         layer.masksToBounds = false;
-        clipsToBounds = true;
+        clipsToBounds = false;
         
         if isRaised {
             // Draw shadow
@@ -224,7 +224,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
             upRect = CGRectMake(0 - raisedShadowXOffset, bounds.origin.y + raisedShadowYOffset, bounds.width + 2*raisedShadowXOffset, bounds.height + raisedShadowYOffset);
             
             layer.shadowColor = UIColor(white: 0.2, alpha: 1.0).CGColor;
-            layer.shadowOffset = CGSizeMake(0.1, 1.0);
+            layer.shadowOffset = CGSizeMake(0, 1.0);
             layer.shadowOpacity = loweredShadowOpacity;
             layer.shadowRadius = loweredShadowRadius;
             layer.shadowPath = UIBezierPath(roundedRect: downRect, cornerRadius: cornerRadius).CGPath;
@@ -292,13 +292,14 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
     
     //MARK: Animation
     public override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
-        println("animation ENDED");
-        if anim.valueForKey("id") as String == "fadeCircleOut" {
+        var key = anim.valueForKey("id") as String;
+        println("animation ENDED \(key)");
+        if key == "fadeCircleOut" {
             if deathRowForCircleLayers.count > 0 {
                 deathRowForCircleLayers[0].removeFromSuperlayer();
                 deathRowForCircleLayers.removeAtIndex(0);
             }
-        } else if anim.valueForKey("id") as String == "removeFadeBackgroundDarker" {
+        } else if key == "removeFadeBackgroundDarker" {
             backgroundColorFadeLayer.backgroundColor = UIColor.clearColor().CGColor;
         }
     }
@@ -377,7 +378,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
         var tapCircleFinalDiameter:CGFloat = tapCircleDiameter < 0 ? max(frame.width, frame.height) : tapCircleDiameter;
         
         // Create a UIView which we can modify for its frame value later (specifically, the ability to use .center):
-        var tapCircleLayerSizerView = UIView(frame: CGRectMake(0, 0, tapCircleDiameter, tapCircleDiameter));
+        var tapCircleLayerSizerView = UIView(frame: CGRectMake(0, 0, tapCircleFinalDiameter, tapCircleFinalDiameter));
         tapCircleLayerSizerView.center = rippleFromTapLocation ? tapPoint : CGPointMake(bounds.midX, bounds.midY);
         
         // Calculate starting path:
@@ -423,9 +424,9 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
         var tapCircleGrowthAnimation = CABasicAnimation(keyPath: "path");
         tapCircleGrowthAnimation.delegate = self;
         tapCircleGrowthAnimation.setValue("tapGrowth", forKey: "id");
-        tapCircleGrowthAnimation.duration = AnimationDurationConstant;
-        tapCircleGrowthAnimation.fromValue = startingCirclePath;
-        tapCircleGrowthAnimation.toValue = endingCirclePath;
+        tapCircleGrowthAnimation.duration = tapCircleGrowthDurationConstant;
+        tapCircleGrowthAnimation.fromValue = startingCirclePath.CGPath;
+        tapCircleGrowthAnimation.toValue = endingCirclePath.CGPath;
         tapCircleGrowthAnimation.fillMode = kCAFillModeForwards;
         tapCircleGrowthAnimation.removedOnCompletion = false;
         tapCircleGrowthAnimation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionEaseOut);
@@ -471,7 +472,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
         
         // Expand tap-circle animation:
         var tapCircleGrowthAnimation = CABasicAnimation(keyPath: "path");
-        tapCircleGrowthAnimation.duration = AnimationDurationConstant;
+        tapCircleGrowthAnimation.duration = fadeOutDurationConstant;
         tapCircleGrowthAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut);
         tapCircleGrowthAnimation.fromValue = startingCirclePath.CGPath;
         tapCircleGrowthAnimation.toValue = endingCirclePath.CGPath;
@@ -487,13 +488,13 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
             var increaseRadius = CABasicAnimation(keyPath: "shadowRadius");
             increaseRadius.fromValue = raisedShadowRadius;
             increaseRadius.toValue = loweredShadowRadius;
-            increaseRadius.duration = AnimationDurationConstant;
+            increaseRadius.duration = fadeOutDurationConstant;
             increaseRadius.fillMode = kCAFillModeForwards;
             increaseRadius.removedOnCompletion = false;
             
             // Change its frame a bit larger and shift it down a bit:
             var shadowAnimation = CABasicAnimation(keyPath: "shadowPath");
-            shadowAnimation.duration = AnimationDurationConstant;
+            shadowAnimation.duration = fadeOutDurationConstant;
             shadowAnimation.fromValue = UIBezierPath(roundedRect: upRect, cornerRadius: cornerRadius).CGPath;
             shadowAnimation.toValue = UIBezierPath(roundedRect: downRect, cornerRadius: cornerRadius).CGPath;
             shadowAnimation.fillMode = kCAFillModeForwards;
@@ -501,7 +502,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
             
             // Lighten the shadow opacity:
             var shadowOpacityAnimation = CABasicAnimation(keyPath: "shadowOpacity");
-            shadowAnimation.duration = AnimationDurationConstant;
+            shadowAnimation.duration = fadeOutDurationConstant;
             shadowAnimation.fromValue = raisedShadowOpacity;
             shadowAnimation.toValue = loweredShadowOpacity;
             shadowAnimation.fillMode = kCAFillModeForwards;
@@ -541,7 +542,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
             fadeOut.setValue("fadeCircleOut", forKey: "id");
             fadeOut.fromValue = tempAnimationLayer.opacity;
             fadeOut.toValue = 0;
-            fadeOut.duration = AnimationDurationConstant;
+            fadeOut.duration = fadeOutDurationConstant;
             fadeOut.fillMode = kCAFillModeForwards;
             fadeOut.removedOnCompletion = false;
             
