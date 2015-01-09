@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442392350.46545"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "growTapCircle()"
             landmarkType = "5">
          </BreakpointContent>
@@ -394,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442391945.490456"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "setupRaised(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -410,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442392994.602759"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "309"
-            endingLineNumber = "309"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "growTapCircle()"
             landmarkType = "5">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442393036.545614"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
             landmarkName = "growTapCircle()"
             landmarkType = "5">
          </BreakpointContent>
@@ -442,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442394072.15554"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
             landmarkName = "growTapCircle()"
             landmarkType = "5">
          </BreakpointContent>
@@ -458,11 +458,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeterialUIKit/Class/MetierialButton.swift"
-            timestampString = "442394367.171043"
+            timestampString = "442457651.402931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
+            startingLineNumber = "440"
+            endingLineNumber = "440"
+            landmarkName = "growTapCircle()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeterialUIKit/Class/MeterialCheckBox.swift"
+            timestampString = "442395981.115412"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "colorWith(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeterialUIKit/Class/MetierialButton.swift"
+            timestampString = "442457651.402931"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
             landmarkName = "growTapCircle()"
             landmarkType = "5">
          </BreakpointContent>

@@ -29,6 +29,16 @@ class ViewController: UIViewController, MeterialCheckboxDelegate {
         flatSmart.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted);
         self.view.addSubview(flatSmart);
         
+        var circle1 = MetierialButton(frame: CGRectMake(20, 468, 86, 86), raised: true);
+        circle1.setTitle("Center", forState: UIControlState.Normal);
+        circle1.titleFont =  UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        circle1.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal);
+        circle1.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted);
+        circle1.backgroundColor = UIColor.greenColor();
+        circle1.tapCircleColor = UIColor(red: 1, green: 0, blue: 1, alpha: 0.6);
+        circle1.cornerRadius = circle1.frame.width/2;
+        circle1.rippleFromTapLocation = false;
+        self.view.addSubview(circle1);
 
         var circle2 = MetierialButton(frame: CGRectMake(116, 468, 86, 86), raised: true);
         circle2.setTitle("Custom", forState: UIControlState.Normal);
@@ -42,6 +52,17 @@ class ViewController: UIViewController, MeterialCheckboxDelegate {
         circle2.rippleBeyondBounds = true;
         circle2.tapCircleDiameter = max(circle2.frame.width, circle2.frame.height)*1.3;
         self.view.addSubview(circle2);
+        
+        var circle3 = MetierialButton(frame: CGRectMake(212, 468, 86, 86), raised: false);
+        circle3.setTitle("Custom", forState: UIControlState.Normal);
+        circle3.titleFont =  UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        circle3.setTitleColor(UIColor.colorWith(0x212121), forState: UIControlState.Normal);
+        circle3.setTitleColor(UIColor.colorWith(0x212121), forState: UIControlState.Highlighted);
+        circle3.tapCircleColor = UIColor(red: 1, green: 0, blue: 1, alpha: 0.6);
+        circle3.backgroundFadeColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1);
+        circle3.cornerRadius = circle3.frame.width/2;
+        circle3.tapCircleDiameter = 53;
+        self.view.addSubview(circle3);
     }
 
     override func didReceiveMemoryWarning() {

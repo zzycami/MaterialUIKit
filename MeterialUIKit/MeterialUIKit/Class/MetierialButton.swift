@@ -45,6 +45,38 @@ private let tapFillColor = UIColor(white: 0.1, alpha: tapFillConstant);
 private let clearBgDumpTapFillColor = UIColor(white: 0.3, alpha: clearBGTapFillConstant);
 private let clearBgDumpFadeColor = UIColor(white: 0.3, alpha: clearBGFadeConstant);
 
+
+extension UIColor {
+    class func isColorClear(color:UIColor?)->Bool {
+        if color == nil {
+            return true;
+        }
+        
+        if color == UIColor.clearColor() {
+            return true;
+        }
+        
+        var totalComponents = CGColorGetNumberOfComponents(color!.CGColor);
+        var isGreyscale = totalComponents == 2 ? true : false;
+        var components = CGColorGetComponents(color!.CGColor);
+        
+        if components == nil {
+            return true;
+        }
+        
+        if isGreyscale {
+            if components[1] <= 0 {
+                return true;
+            }
+        }else {
+            if components[3] <= 0 {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
 @IBDesignable
 public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
     /** The corner radius which propagates through to the sub layers. */
@@ -338,7 +370,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
         
         // Spawn a growing circle that "ripples" through the button:
         var endRect = CGRectMake(bounds.origin.x, bounds.origin.y, frame.width, frame.height);
-        if backgroundColor == UIColor.clearColor() {
+        if UIColor.isColorClear(backgroundColor?) {
             // CLEAR BACKROUND SHOULD ONLY BE FOR FLAT BUTTONS!!!
             
             // Set the fill color for the tap circle (self.animationLayer's fill color):
@@ -513,7 +545,7 @@ public class MetierialButton: UIButton, UIGestureRecognizerDelegate {
             layer.addAnimation(shadowOpacityAnimation, forKey: "shadowOpacity");
         }
         
-        if backgroundColor == UIColor.clearColor() {
+        if UIColor.isColorClear(backgroundColor) {
             // Fade the background color a bit darker:
             var removeFadeBackgroundDarker = CABasicAnimation(keyPath: "opacity");
             removeFadeBackgroundDarker.delegate = self;
