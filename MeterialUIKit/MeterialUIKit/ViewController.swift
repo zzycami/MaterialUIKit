@@ -9,25 +9,55 @@
 import UIKit
 
 class ViewController: UIViewController, MeterialCheckboxDelegate {
-
-    @IBOutlet weak var checkBox2: MeterialCheckBox!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        var checkBox:MeterialCheckBox = MeterialCheckBox(frame: CGRectMake(20, 150, CheckboxDefaultRadius*2, CheckboxDefaultRadius*2));
-//        checkBox.tag = 1001;
-//        checkBox.delegate = self;
-//        //checkBox.backgroundColor = UIColor.greenColor();
-//        view.addSubview(checkBox);
-        
         
         var flatSmart = MetierialButton(frame: CGRectMake(20, 20, 280, 43), raised: false);
-        flatSmart.setTitle("BFPaperButton Flat: Smart Color", forState: UIControlState.Normal);
+        flatSmart.setTitle("PaperButton Flat: Smart Color", forState: UIControlState.Normal);
         flatSmart.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
         flatSmart.backgroundColor = UIColor.colorWith(0x757575);
         flatSmart.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal);
         flatSmart.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted);
         self.view.addSubview(flatSmart);
+        
+        var flatDumb = MetierialButton(frame: CGRectMake(20, 71, 280, 43), raised: false);
+        flatDumb.setTitle("PaperButton Flat: !Smart Color", forState: UIControlState.Normal);
+        flatDumb.usesSmartColor = false;
+        flatDumb.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        flatDumb.backgroundColor = UIColor.colorWith(0x757575);
+        flatDumb.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal);
+        flatDumb.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Highlighted);
+        self.view.addSubview(flatDumb);
+        
+        var flatClearSmart = MetierialButton(frame: CGRectMake(20, 122, 280, 43), raised: false);
+        flatClearSmart.setTitle("BFPaperButton Flat: Clear, Smart Color", forState: UIControlState.Normal);
+        flatClearSmart.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        flatClearSmart.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+        flatClearSmart.setTitleColor(UIColor.blueColor(), forState: UIControlState.Highlighted);
+        self.view.addSubview(flatClearSmart);
+        
+        var flatClearDump = MetierialButton(frame: CGRectMake(20, 173, 280, 43), raised: false);
+        flatClearDump.usesSmartColor = false;
+        flatClearDump.setTitle("BFPaperButton Flat: Clear, !Smart Color", forState: UIControlState.Normal);
+        flatClearDump.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        flatClearDump.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+        flatClearDump.setTitleColor(UIColor.blueColor(), forState: UIControlState.Highlighted);
+        self.view.addSubview(flatClearDump);
+        
+        
+        var raisedSmart = MetierialButton(frame: CGRectMake(20, 239, 280, 43), raised: true);
+        raisedSmart.backgroundColor = UIColor.blueColor();
+        raisedSmart.setTitle("BFPaperButton Raised: Smart Color", forState: UIControlState.Normal);
+        raisedSmart.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        self.view.addSubview(raisedSmart);
+        
+        var dumpedSmart = MetierialButton(frame: CGRectMake(20, 307, 280, 43), raised: true);
+        dumpedSmart.usesSmartColor = false;
+        dumpedSmart.backgroundColor = UIColor.blueColor();
+        dumpedSmart.setTitle("BFPaperButton Raised: Smart Color", forState: UIControlState.Normal);
+        dumpedSmart.titleFont = UIFont(name: "HelveticaNeue-Light", size: 15.0);
+        self.view.addSubview(dumpedSmart);
         
         var circle1 = MetierialButton(frame: CGRectMake(20, 468, 86, 86), raised: true);
         circle1.setTitle("Center", forState: UIControlState.Normal);
